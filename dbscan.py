@@ -17,7 +17,7 @@ df['Latitude'] = pd.to_numeric(df['Latitude'])
 df['Longitude'] = pd.to_numeric(df['Longitude'])
 
 # Adjust the column names accordingly
-X = df[['Latitude', 'Longitude']]
+X = df[['Longitude', 'Latitude']]  # Swap Longitude and Latitude
 
 # Calculating the centroid
 centroid = X.mean()
@@ -37,19 +37,19 @@ labels = dbscan.fit_predict(X)
 df['Cluster'] = labels
 
 # Calculate the centroid of each cluster
-centroids = df.groupby('Cluster')[['Latitude', 'Longitude']].mean()
+centroids = df.groupby('Cluster')[['Longitude', 'Latitude']].mean()
 
 # Calculate each data to data centroid
-df['Distance_to_Centroid'] = ((df['Latitude'] - centroid['Latitude'])**2 + (df['Longitude'] - centroid['Longitude'])**2)**0.5
+df['Distance_to_Centroid'] = ((df['Longitude'] - centroid['Longitude'])**2 + (df['Latitude'] - centroid['Latitude'])**2)**0.5
 
 # Displaying the clustered DataFrame
 print(df)
 
 # Visualize the clusters (for 2D data)
-plt.scatter(df['Latitude'], df['Longitude'], c=df['Cluster'], cmap='viridis')
-plt.scatter(centroids['Latitude'], centroids['Longitude'], marker='X', c='red', label='Cluster Centroids')
-plt.scatter(centroid['Latitude'], centroid['Longitude'], marker='*', c='blue', label='Data Centroid')
+plt.scatter(df['Longitude'], df['Latitude'], c=df['Cluster'], cmap='viridis')  # Swap Longitude and Latitude
+plt.scatter(centroids['Longitude'], centroids['Latitude'], marker='X', c='red', label='Cluster Centroids')
+plt.scatter(centroid['Longitude'], centroid['Latitude'], marker='*', c='blue', label='Data Centroid')
 plt.title('DBSCAN Clustering')
-plt.xlabel('Latitude')
-plt.ylabel('Longitude')
+plt.xlabel('Longitude')  # Swap Longitude and Latitude
+plt.ylabel('Latitude')  # Swap Longitude and Latitude
 plt.show()
